@@ -14,7 +14,13 @@ function sendRequest() {
       skipDefaultHeaders: true,
     },
   );
-  source.addEventListener('message', console.log);
+  source.addEventListener('open', () => {
+    console.log('Connected');
+  });
+  source.addEventListener('message', (e) => {
+    console.log('Message');
+    console.log(e);
+  });
   source.addEventListener('error', (err) => {
     console.error(err);
     source.close();
