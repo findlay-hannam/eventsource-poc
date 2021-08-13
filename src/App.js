@@ -4,7 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 
 function sendRequest() {
-  const source = new SSE('https://localhost.mendeley.com:3000/query-intent',
+  const source = new SSE('https://staging.mendeley.com/query-intent',
     {
       payload: JSON.stringify({ a: 'b' }),
       headers: {
