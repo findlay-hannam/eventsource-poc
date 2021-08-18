@@ -1,12 +1,24 @@
-import { EventSource } from 'launchdarkly-eventsource';
 import { SSE } from 'sse.js';
 import logo from './logo.svg';
 import './App.css';
 
 function sendRequest() {
   const source = new SSE('https://staging.mendeley.com/query-intent',
+  // const source = new SSE('https://localhost.mendeley.com:3000/query-intent',
     {
-      payload: JSON.stringify({ a: 'b' }),
+      payload: JSON.stringify({
+        searchQuery: 'data',
+        pageNumber: 1,
+        facets: {
+          facets: {
+            authorFullName: [{
+              label: "Bertil Halle",
+              name: "Bertil Halle",
+              isApplied: true,
+            }],
+          },
+        },
+      }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -18,26 +30,13 @@ function sendRequest() {
     console.log('Connected');
   });
   source.addEventListener('message', (e) => {
-    console.log('Message');
-    console.log(e);
+    console.log('Message', JSON.parse(e.data));
   });
   source.addEventListener('error', (err) => {
     console.error(err);
     source.close();
   });
   source.stream();
-  // const config = {
-  //   method: 'POST',
-  //   'Content-Type': 'application/json',
-  //   body: JSON.stringify({ a: 'b' }),
-  //   skipDefaultHeaders: true,
-  // };
-  // const eventSource = new EventSource('https://localhost.mendeley.com:3000/query-intent', config);
-  // eventSource.addEventListener('message', console.log);
-  // eventSource.onerror = (error) => {
-  //   console.error(error);
-  //   eventSource.close();
-  // };
 }
 
 function App() {
